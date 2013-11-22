@@ -1,7 +1,8 @@
 $(document).ready(function(e) {
-    callParentService();
+    callParentService()
+    test();
 });
-
+var length = 0;
 function callParentService() {
     var thisObj = this;
     $.ajax({
@@ -9,13 +10,13 @@ function callParentService() {
         url: 'js/user.json',
         async: "false",
         success: function(parent) {
-            for (var i = 0; i < parent.childResources.length; i++) {
-                alert("Hi")
-                $.ajax({
-                    type: "GET",
-                    url: 'js/userChild.json',
-                    async: "true",
-                    success: function(child) {
+            $.ajax({
+                type: "GET",
+                url: 'js/userChild.json',
+                async: "false",
+                success: function(child) {
+                    tempObj = [];
+                    for (var i = 0; i < parent.childResources.length; i++) {
                         for (var i = 0; i < child.length; i++) {
                             if (child[i].operatorId == parent.childResources[i].operatorId) {
                                 var tempJson = new function() {
@@ -44,23 +45,21 @@ function callParentService() {
                                     this.tripDetail = child[i].tripDetail;
                                     this.tripId = child[i].tripId;
                                     this.tripSnoozed = child[i].tripSnoozed;
-                                    alert("Hi2")
                                 }
-                                console.log(JSON.stringify(tempJson))
+                                tempObj.push(tempJson)
+                                console.log(JSON.stringify(tempObj))  
+                                alert("Hi");
                             }
                         }
                     }
-                });
-            }
+                }
+            });
         }
     });
 }
 
-function passParentData(operatorId, eUAAccepted, operatorStatus, snoozeStartTime,
-        snoozeEndTime, dob, resourceName, primaryPhoneNumber,
-        primaryEmailAddress, firstName) {
-
-
+function test() {
+alert("in test")
 }
 
 
