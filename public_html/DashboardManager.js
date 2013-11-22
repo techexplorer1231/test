@@ -1,89 +1,74 @@
 $(document).ready(function(e) {
     callParentService();
-
 });
-var parentJson;
-var childJson;
+var operatorId;
+var eUAAccepted;
+var operatorStatus;
+var snoozeStartTime;
+var snoozeEndTime;
+var dob;
+var resourceName;
+var primaryPhoneNumber;
+var primaryEmailAddress
+var firstName;
 
 function callParentService() {
     $.getJSON('js/user.json', function(parent) {
-        getChildDetailsFromParentJson(parent);
-    });
-}
+        for (var i = 0; i < parent.childResources.length; i++) {
 
-function getChildDetailsFromParentJson(userParent) {
-    var thisObj = this;
-    for (var i = 0; i < userParent.childResources.length; i++) {
-        thisObj.sendParentJsonValue(
-                userParent.childResources[i].operatorId,
-                userParent.childResources[i].eUAAccepted,
-                userParent.childResources[i].operatorStatus,
-                userParent.childResources[i].snoozeStartTime,
-                userParent.childResources[i].snoozeEndTime,
-                userParent.childResources[i].dob,
-                userParent.childResources[i].resourceName,
-                userParent.childResources[i].primaryPhoneNumber,
-                userParent.childResources[i].primaryEmailAddress,
-                userParent.childResources[i].firstName);
-    }
-}
-
-function sendParentJsonValue(operatorId, eUAAccepted, operatorStatus, snoozeStartTime,
-        snoozeEndTime, dob, resourceName, primaryPhoneNumber,
-        primaryEmailAddress, firstName) {
-
-    var tempParent = new function() {
-        this.operatorId = operatorId;
-        this.eUAAccepted = eUAAccepted;
-        this.operatorStatus = operatorStatus;
-        this.snoozeStartTime = snoozeStartTime;
-        this.snoozeEndTime = snoozeEndTime;
-        this.dob = dob;
-        this.resourceName = resourceName;
-        this.primaryPhoneNumber = primaryPhoneNumber;
-        this.primaryEmailAddress = primaryEmailAddress;
-        this.firstName = firstName;
-    }
-    parentJson = tempParent;
-    tempOperatorId = operatorId;
-    callChildService(tempParent, tempOperatorId);
-}
-
-function callChildService(tempParentJson, operatorId) {
-    $.getJSON('js/userChild.json', function(child) {
-        for (var i = 0; i < child.length; i++) {
-            if (child[i].operatorId == operatorId) {
-                var tempChildAndParent = new function() {
-                    this.operatorId = tempParentJson.operatorId;
-                    this.eUAAccepted = tempParentJson.eUAAccepted;
-                    this.operatorStatus = tempParentJson.operatorStatus;
-                    this.snoozeStartTime = tempParentJson.snoozeStartTime;
-                    this.snoozeEndTime = tempParentJson.snoozeEndTime;
-                    this.dob = tempParentJson.dob;
-                    this.resourceName = tempParentJson.resourceName;
-                    this.primaryPhoneNumber = tempParentJson.primaryPhoneNumber;
-                    this.primaryEmailAddress = tempParentJson.primaryEmailAddress;
-                    this.firstName = tempParentJson.firstName;
-                    this.geoFenceViolationCnt = child[i].geoFenceViolationCnt;
-                    this.curfewViolationCnt = child[i].curfewViolationCnt;
-                    this.totalPointsAfterTrip = child[i].totalPointsAfterTrip;
-                    this.totalBadgesAfterTrip = child[i].totalBadgesAfterTrip;
-                    this.tripStartDateTime = child[i].tripStartDateTime;
-                    this.tripEndTime = child[i].tripEndTime;
-                    this.distanceCovered = child[i].distanceCovered;
-                    this.speedViolationCnt = child[i].speedViolationCnt;
-                    this.tripPoints = child[i].tripPoints;
-                    this.badgesInTrip = child[i].badgesInTrip;
-                    this.totalCredits = child[i].totalCredits;
-                    this.tripProcessed = child[i].tripProcessed;
-                    this.tripDetail = child[i].tripDetail;
-                    this.tripId = child[i].tripId;
-                    this.tripSnoozed = child[i].tripSnoozed;
+            operatorId = parent.childResources[i].operatorId;
+            eUAAccepted = parent.childResources[i].eUAAccepted;
+            operatorStatus = parent.childResources[i].operatorStatus;
+            snoozeStartTime = parent.childResources[i].snoozeStartTime;
+            snoozeEndTime = parent.childResources[i].snoozeEndTime;
+            dob = parent.childResources[i].dob;
+            resourceName = parent.childResources[i].resourceName;
+            primaryPhoneNumber = parent.childResources[i].primaryPhoneNumber;
+            primaryEmailAddress = parent.childResources[i].primaryEmailAddress;
+            firstName = parent.childResources[i].firstName;
+            $.getJSON('js/userChild.json', function(child) {
+                for (var i = 0; i < child.length; i++) {
+                    if (child[i].operatorId == operatorId) {
+                        //alert("processing")
+                        var tempChildAndParentIndividual = new function() {
+                            this.operatorId = operatorId;
+                            this.eUAAccepted = eUAAccepted;
+                            this.operatorStatus = operatorStatus;
+                            this.snoozeStartTime = snoozeStartTime;
+                            this.snoozeEndTime = snoozeEndTime;
+                            this.dob = dob;
+                            this.resourceName = resourceName;
+                            this.primaryPhoneNumber = primaryPhoneNumber;
+                            this.primaryEmailAddress = primaryEmailAddress;
+                            this.firstName = firstName;
+                            this.geoFenceViolationCnt = child[i].geoFenceViolationCnt;
+                            this.curfewViolationCnt = child[i].curfewViolationCnt;
+                            this.totalPointsAfterTrip = child[i].totalPointsAfterTrip;
+                            this.totalBadgesAfterTrip = child[i].totalBadgesAfterTrip;
+                            this.tripStartDateTime = child[i].tripStartDateTime;
+                            this.tripEndTime = child[i].tripEndTime;
+                            this.distanceCovered = child[i].distanceCovered;
+                            this.speedViolationCnt = child[i].speedViolationCnt;
+                            this.tripPoints = child[i].tripPoints;
+                            this.badgesInTrip = child[i].badgesInTrip;
+                            this.totalCredits = child[i].totalCredits;
+                            this.tripProcessed = child[i].tripProcessed;
+                            this.tripDetail = child[i].tripDetail;
+                            this.tripId = child[i].tripId;
+                            this.tripSnoozed = child[i].tripSnoozed;
+                        }
+                        obj.push(tempChildAndParentIndividual);
+                    }
+                    console.log(JSON.stringify(obj))
                 }
-                console.log(JSON.stringify(tempChildAndParent))
-            }
+            });
         }
     });
+}
+
+obj = []
+function callChildService(operatorId, eUAAccepted, operatorStatus, snoozeStartTime, snoozeEndTime, dob, resourceName, primaryPhoneNumber,
+        primaryEmailAddress, firstName) {
 }
 
 
