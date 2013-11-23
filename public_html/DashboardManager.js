@@ -1,8 +1,9 @@
 $(document).ready(function(e) {
     callParentService()
-    test();
 });
 var length = 0;
+var tempObj = [];
+
 function callParentService() {
     var thisObj = this;
     $.ajax({
@@ -15,10 +16,9 @@ function callParentService() {
                 url: 'js/userChild.json',
                 async: "false",
                 success: function(child) {
-                    tempObj = [];
                     for (var i = 0; i < parent.childResources.length; i++) {
-                        for (var i = 0; i < child.length; i++) {
-                            if (child[i].operatorId == parent.childResources[i].operatorId) {
+                        for (var j = 0; j < child.length; j++) {
+                            if (parent.childResources[i].operatorId === child[j].operatorId) {
                                 var tempJson = new function() {
                                     this.operatorId = parent.childResources[i].operatorId;
                                     this.eUAAccepted = parent.childResources[i].eUAAccepted;
@@ -30,36 +30,31 @@ function callParentService() {
                                     this.primaryPhoneNumber = parent.childResources[i].primaryPhoneNumber;
                                     this.primaryEmailAddress = parent.childResources[i].primaryEmailAddress;
                                     this.firstName = parent.childResources[i].firstName;
-                                    this.geoFenceViolationCnt = child[i].geoFenceViolationCnt;
-                                    this.curfewViolationCnt = child[i].curfewViolationCnt;
-                                    this.totalPointsAfterTrip = child[i].totalPointsAfterTrip;
-                                    this.totalBadgesAfterTrip = child[i].totalBadgesAfterTrip;
-                                    this.tripStartDateTime = child[i].tripStartDateTime;
-                                    this.tripEndTime = child[i].tripEndTime;
-                                    this.distanceCovered = child[i].distanceCovered;
-                                    this.speedViolationCnt = child[i].speedViolationCnt;
-                                    this.tripPoints = child[i].tripPoints;
-                                    this.badgesInTrip = child[i].badgesInTrip;
-                                    this.totalCredits = child[i].totalCredits;
-                                    this.tripProcessed = child[i].tripProcessed;
-                                    this.tripDetail = child[i].tripDetail;
-                                    this.tripId = child[i].tripId;
-                                    this.tripSnoozed = child[i].tripSnoozed;
-                                }
-                                tempObj.push(tempJson)
-                                console.log(JSON.stringify(tempObj))  
-                                alert("Hi");
+                                    this.geoFenceViolationCnt = child[j].geoFenceViolationCnt;
+                                    this.curfewViolationCnt = child[j].curfewViolationCnt;
+                                    this.totalPointsAfterTrip = child[j].totalPointsAfterTrip;
+                                    this.totalBadgesAfterTrip = child[j].totalBadgesAfterTrip;
+                                    this.tripStartDateTime = child[j].tripStartDateTime;
+                                    this.tripEndTime = child[j].tripEndTime;
+                                    this.distanceCovered = child[j].distanceCovered;
+                                    this.speedViolationCnt = child[j].speedViolationCnt;
+                                    this.tripPoints = child[j].tripPoints;
+                                    this.badgesInTrip = child[j].badgesInTrip;
+                                    this.totalCredits = child[j].totalCredits;
+                                    this.tripProcessed = child[j].tripProcessed;
+                                    this.tripDetail = child[j].tripDetail;
+                                    this.tripId = child[j].tripId;
+                                    this.tripSnoozed = child[j].tripSnoozed;
+                                };
+                                tempObj.push(tempJson);
+                                console.log(JSON.stringify(tempObj));
                             }
                         }
+
                     }
                 }
             });
         }
     });
 }
-
-function test() {
-alert("in test")
-}
-
 
