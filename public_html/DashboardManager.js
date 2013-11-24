@@ -96,7 +96,7 @@ function callChildService(parent, opId) {
 function tripSummary() {
     for (var i = 0; i < childArray.length; i++) {
         tempTripSummary = null;
-        
+
         tempTripSummary = new function() {
             //create Json
             //console.log("will Start test now");
@@ -129,11 +129,22 @@ function tripSummary() {
             this.tripSnoozed = childArray[i].tripSnoozed;
             //create Json
         };
-        if (compOperatorId != childArray[i].operatorId) {
-            compOperatorId = childArray[i].operatorId;
-            tempSumJson.push(tempTripSummary);
-            console.log(JSON.stringify(tempSumJson));
-        }
+        console.log(JSON.stringify(tempTripSummary));
+//        if (compOperatorId != childArray[i].operatorId) {
+//            compOperatorId = childArray[i].operatorId;
+//            tempSumJson.push(tempTripSummary);
+//            console.log(JSON.stringify(tempSumJson));
+//
+//            tmpGeoFenceViolationCnt = 0;
+//            tmpCurfewViolationCnt = 0;
+//            tmpTotalPointsAfterTrip = 0;
+//            tmpTotalBadgesAfterTrip = 0;
+//            tmpDistanceCovered = 0;
+//            tmpSpeedViolationCnt = 0;
+//            tmpTripPoints = 0;
+//            tmpBadgesInTrip = 0;
+//            tmpTotalCredits = 0;
+//        }
     }
 }
 
