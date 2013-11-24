@@ -1,8 +1,10 @@
 var childArray = [];
 var compOperatorId = null;
+var oldCompOperatorId = null;
 var noOfChild = null;
 var tempSumJson = [];
 var tempTripSummary;
+var raiseFlag = 0;
 
 //variables to create array
 var tmpGeoFenceViolationCnt = 0;
@@ -16,7 +18,7 @@ var tmpBadgesInTrip = 0;
 var tmpTotalCredits = 0;
 
 //
-var flagCount = -1;
+
 
 $(document).ready(function(e) {
     //console.log("will Start test now");
@@ -28,7 +30,7 @@ $(document).ready(function(e) {
 
 function test() {
     childArray = callParentService();
-    //console.log(JSON.stringify(childArray));
+    console.log(JSON.stringify(childArray)); //output for each parent JSON with each child JSON.
 }
 
 function callParentService() {
@@ -56,7 +58,7 @@ function callChildService(parent, opId) {
             async: false,
             success: function(child) {
                 for (var i = 0; i < child.length; i++) {
-                    if (opId === child[i].operatorId) {
+                    if (opId === child[i].operatorId) { //remove if logic this when actually implementing
                         var tempJson = new function() {
                             this.operatorId = parent.operatorId;
                             this.eUAAccepted = parent.eUAAccepted;
@@ -94,58 +96,33 @@ function callChildService(parent, opId) {
 }
 
 function tripSummary() {
-    for (var i = 0; i < childArray.length; i++) {
-        tempTripSummary = null;
 
-        tempTripSummary = new function() {
-            //create Json
-            //console.log("will Start test now");
-            //console.log(JSON.stringify(childArray[i]));
-            //console.log("Completed Test");
-            this.operatorId = childArray[i].operatorId;
-            this.eUAAccepted = childArray[i].eUAAccepted;
-            this.operatorStatus = childArray[i].operatorStatus;
-            this.snoozeStartTime = childArray[i].snoozeStartTime;
-            this.snoozeEndTime = childArray[i].snoozeEndTime;
-            this.dob = childArray[i].dob;
-            this.resourceName = childArray[i].resourceName;
-            this.primaryPhoneNumber = childArray[i].primaryPhoneNumber;
-            this.primaryEmailAddress = childArray[i].primaryEmailAddress;
-            this.firstName = childArray[i].firstName;
-            this.geoFenceViolationCnt = addPoints(childArray[i].geoFenceViolationCnt, "tmpGeoFenceViolationCnt");
-            this.curfewViolationCnt = addPoints(childArray[i].curfewViolationCnt, "tmpCurfewViolationCnt");
-            this.totalPointsAfterTrip = addPoints(childArray[i].totalPointsAfterTrip, "tmpTotalPointsAfterTrip");
-            this.totalBadgesAfterTrip = addPoints(childArray[i].totalBadgesAfterTrip, "tmpTotalBadgesAfterTrip");
-            this.tripStartDateTime = childArray[i].tripStartDateTime;
-            this.tripEndTime = childArray[i].tripEndTime;
-            this.distanceCovered = addPoints(childArray[i].distanceCovered, "tmpDistanceCovered");
-            this.speedViolationCnt = addPoints(childArray[i].speedViolationCnt, "tmpSpeedViolationCnt");
-            this.tripPoints = addPoints(childArray[i].tripPoints, "tmpTripPoints");
-            this.badgesInTrip = addPoints(childArray[i].badgesInTrip, "tmpBadgesInTrip");
-            this.totalCredits = addPoints(childArray[i].totalCredits, "tmpTotalCredits");
-            this.tripProcessed = childArray[i].tripProcessed;
-            this.tripDetail = childArray[i].tripDetail;
-            this.tripId = childArray[i].tripId;
-            this.tripSnoozed = childArray[i].tripSnoozed;
-            //create Json
-        };
-        console.log(JSON.stringify(tempTripSummary));
-//        if (compOperatorId != childArray[i].operatorId) {
-//            compOperatorId = childArray[i].operatorId;
-//            tempSumJson.push(tempTripSummary);
-//            console.log(JSON.stringify(tempSumJson));
-//
-//            tmpGeoFenceViolationCnt = 0;
-//            tmpCurfewViolationCnt = 0;
-//            tmpTotalPointsAfterTrip = 0;
-//            tmpTotalBadgesAfterTrip = 0;
-//            tmpDistanceCovered = 0;
-//            tmpSpeedViolationCnt = 0;
-//            tmpTripPoints = 0;
-//            tmpBadgesInTrip = 0;
-//            tmpTotalCredits = 0;
-//        }
+    compOperatorId = childArray[0].operatorId;
+    // alert(compOperatorId);
+    for (var i = 0; i < childArray.length; i++) {
+        if (compOperatorId == childArray[i].operatorId) {
+            callCreateSumJSON(childArray[i]);
+        }
+        else {
+            tempSumJson.push(tempTripSummary);
+            compOperatorId = childArray[i].operatorId;
+            
+            tmpGeoFenceViolationCnt = 0;
+            tmpCurfewViolationCnt = 0;
+            tmpTotalPointsAfterTrip = 0;
+            tmpTotalBadgesAfterTrip = 0;
+            tmpDistanceCovered = 0;
+            tmpSpeedViolationCnt = 0;
+            tmpTripPoints = 0;
+            tmpBadgesInTrip = 0;
+            tmpTotalCredits = 0;
+            
+            callCreateSumJSON(childArray[i]);
+        }
+         
     }
+    tempSumJson.push(tempTripSummary);
+    console.log(JSON.stringify(tempSumJson));   //output for SUM Json
 }
 
 function addPoints(actual, tmp) {
@@ -194,6 +171,33 @@ function tripSummaryDetails() {
 
 }
 
-function callCreateSumJSON() {
-
+function callCreateSumJSON(tempChildArray) {
+    tempTripSummary = new function() {
+        this.operatorId = tempChildArray.operatorId;
+        this.eUAAccepted = tempChildArray.eUAAccepted;
+        this.operatorStatus = tempChildArray.operatorStatus;
+        this.snoozeStartTime = tempChildArray.snoozeStartTime;
+        this.snoozeEndTime = tempChildArray.snoozeEndTime;
+        this.dob = tempChildArray.dob;
+        this.resourceName = tempChildArray.resourceName;
+        this.primaryPhoneNumber = tempChildArray.primaryPhoneNumber;
+        this.primaryEmailAddress = tempChildArray.primaryEmailAddress;
+        this.firstName = tempChildArray.firstName;
+        this.geoFenceViolationCnt = addPoints(tempChildArray.geoFenceViolationCnt, "tmpGeoFenceViolationCnt");
+        this.curfewViolationCnt = addPoints(tempChildArray.curfewViolationCnt, "tmpCurfewViolationCnt");
+        this.totalPointsAfterTrip = addPoints(tempChildArray.totalPointsAfterTrip, "tmpTotalPointsAfterTrip");
+        this.totalBadgesAfterTrip = addPoints(tempChildArray.totalBadgesAfterTrip, "tmpTotalBadgesAfterTrip");
+        this.tripStartDateTime = tempChildArray.tripStartDateTime;
+        this.tripEndTime = tempChildArray.tripEndTime;
+        this.distanceCovered = addPoints(tempChildArray.distanceCovered, "tmpDistanceCovered");
+        this.speedViolationCnt = addPoints(tempChildArray.speedViolationCnt, "tmpSpeedViolationCnt");
+        this.tripPoints = addPoints(tempChildArray.tripPoints, "tmpTripPoints");
+        this.badgesInTrip = addPoints(tempChildArray.badgesInTrip, "tmpBadgesInTrip");
+        this.totalCredits = addPoints(tempChildArray.totalCredits, "tmpTotalCredits");
+        this.tripProcessed = tempChildArray.tripProcessed;
+        this.tripDetail = tempChildArray.tripDetail;
+        this.tripId = tempChildArray.tripId;
+        this.tripSnoozed = tempChildArray.tripSnoozed;
+        //create Json
+    };
 }
