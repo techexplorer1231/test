@@ -1,12 +1,34 @@
 var childArray = [];
+var compOperatorId = null;
+var noOfChild = null;
+var tempSumJson = [];
+var tempTripSummary;
+
+//variables to create array
+var tmpGeoFenceViolationCnt = 0;
+var tmpCurfewViolationCnt = 0;
+var tmpTotalPointsAfterTrip = 0;
+var tmpTotalBadgesAfterTrip = 0;
+var tmpDistanceCovered = 0;
+var tmpSpeedViolationCnt = 0;
+var tmpTripPoints = 0;
+var tmpBadgesInTrip = 0;
+var tmpTotalCredits = 0;
+
+//
+var flagCount = -1;
 
 $(document).ready(function(e) {
+    //console.log("will Start test now");
     test();
+    //console.log("Completed Test");
+    console.log("call trip summary");
+    tripSummary();
 });
 
 function test() {
-    var temp = callParentService();
-    console.log(JSON.stringify(temp));
+    childArray = callParentService();
+    //console.log(JSON.stringify(childArray));
 }
 
 function callParentService() {
@@ -17,18 +39,16 @@ function callParentService() {
             async: false,
             success: function(parent) {
                 for (var i = 0; i < parent.childResources.length; i++) {
-                    //alert("In Parent");
+                    noOfChild = parent.childResources.length;
                     childArray = callChildService(parent.childResources[i], parent.childResources[i].operatorId);
-                    // console.log(JSON.stringify(childArray));
                 }
             }
         });
-    }
+    };
     return childArray;
 }
 
 function callChildService(parent, opId) {
-
     var temp = new function() {
         $.ajax({
             type: "GET",
@@ -67,100 +87,102 @@ function callChildService(parent, opId) {
                         childArray.push(tempJson);
                     }
                 }
-                // console.log(JSON.stringify(childArray));
             }
         });
-    }
+    };
     return childArray;
 }
 
-//var parentItems = [];
-//var countChildren;
-//function callParentService() {
-//    $.ajax({
-//        type: "GET",
-//        url: 'js/user.json',
-//        async: false,
-//        success: function(parent) {
-//
-//            for (var i = 0; i < parent.childResources.length; i++) {
-//                parentItems.push(parent.childResources[i]);
-//                countChildren = i;
-//            }
-//            //alert("In Parent" + i);
-//        }
-//
-//    });
-//}
-//
-//function callParentService() {
-//    for (var i = 0; i <= countChildren; i++) {
-//        $.ajax({
-//            type: "GET",
-//            url: 'js/userChild.json',
-//            async: false,
-//            success: function(child) {
-//
-//
-//            }
-//        });
-//}
+function tripSummary() {
+    for (var i = 0; i < childArray.length; i++) {
+        tempTripSummary = null;
+        
+        tempTripSummary = new function() {
+            //create Json
+            //console.log("will Start test now");
+            //console.log(JSON.stringify(childArray[i]));
+            //console.log("Completed Test");
+            this.operatorId = childArray[i].operatorId;
+            this.eUAAccepted = childArray[i].eUAAccepted;
+            this.operatorStatus = childArray[i].operatorStatus;
+            this.snoozeStartTime = childArray[i].snoozeStartTime;
+            this.snoozeEndTime = childArray[i].snoozeEndTime;
+            this.dob = childArray[i].dob;
+            this.resourceName = childArray[i].resourceName;
+            this.primaryPhoneNumber = childArray[i].primaryPhoneNumber;
+            this.primaryEmailAddress = childArray[i].primaryEmailAddress;
+            this.firstName = childArray[i].firstName;
+            this.geoFenceViolationCnt = addPoints(childArray[i].geoFenceViolationCnt, "tmpGeoFenceViolationCnt");
+            this.curfewViolationCnt = addPoints(childArray[i].curfewViolationCnt, "tmpCurfewViolationCnt");
+            this.totalPointsAfterTrip = addPoints(childArray[i].totalPointsAfterTrip, "tmpTotalPointsAfterTrip");
+            this.totalBadgesAfterTrip = addPoints(childArray[i].totalBadgesAfterTrip, "tmpTotalBadgesAfterTrip");
+            this.tripStartDateTime = childArray[i].tripStartDateTime;
+            this.tripEndTime = childArray[i].tripEndTime;
+            this.distanceCovered = addPoints(childArray[i].distanceCovered, "tmpDistanceCovered");
+            this.speedViolationCnt = addPoints(childArray[i].speedViolationCnt, "tmpSpeedViolationCnt");
+            this.tripPoints = addPoints(childArray[i].tripPoints, "tmpTripPoints");
+            this.badgesInTrip = addPoints(childArray[i].badgesInTrip, "tmpBadgesInTrip");
+            this.totalCredits = addPoints(childArray[i].totalCredits, "tmpTotalCredits");
+            this.tripProcessed = childArray[i].tripProcessed;
+            this.tripDetail = childArray[i].tripDetail;
+            this.tripId = childArray[i].tripId;
+            this.tripSnoozed = childArray[i].tripSnoozed;
+            //create Json
+        };
+        if (compOperatorId != childArray[i].operatorId) {
+            compOperatorId = childArray[i].operatorId;
+            tempSumJson.push(tempTripSummary);
+            console.log(JSON.stringify(tempSumJson));
+        }
+    }
+}
 
+function addPoints(actual, tmp) {
+    var returnValue;
+    if (tmp == "tmpGeoFenceViolationCnt") {
+        tmpGeoFenceViolationCnt = actual + tmpGeoFenceViolationCnt;
+        returnValue = tmpGeoFenceViolationCnt;
+    }
+    else if (tmp == "tmpCurfewViolationCnt") {
+        tmpCurfewViolationCnt = actual + tmpCurfewViolationCnt;
+        returnValue = tmpCurfewViolationCnt;
+    }
+    else if (tmp == "tmpTotalPointsAfterTrip") {
+        tmpTotalPointsAfterTrip = actual + tmpTotalPointsAfterTrip;
+        returnValue = tmpTotalPointsAfterTrip;
+    }
+    else if (tmp == "tmpTotalBadgesAfterTrip") {
+        tmpTotalBadgesAfterTrip = actual + tmpTotalBadgesAfterTrip;
+        returnValue = tmpTotalBadgesAfterTrip;
+    }
+    else if (tmp == "tmpDistanceCovered") {
+        tmpDistanceCovered = actual + tmpDistanceCovered;
+        returnValue = tmpDistanceCovered;
+    }
+    else if (tmp == "tmpSpeedViolationCnt") {
+        tmpSpeedViolationCnt = actual + tmpSpeedViolationCnt;
+        returnValue = tmpSpeedViolationCnt;
+    }
+    else if (tmp == "tmpTripPoints") {
+        tmpTripPoints = actual + tmpTripPoints;
+        returnValue = tmpTripPoints;
+    }
+    else if (tmp == "tmpBadgesInTrip") {
+        tmpBadgesInTrip = actual + tmpBadgesInTrip;
+        returnValue = tmpBadgesInTrip;
+    }
+    else if (tmp == "tmpTotalCredits") {
+        tmpTotalCredits = actual + tmpTotalCredits;
+        returnValue = tmpTotalCredits;
+    }
 
+    return returnValue;
+}
 
-//var length = 0;
-//var tempObj = [];
-//function callParentService() {
-//    var thisObj = this;
-//    $.ajax({
-//        type: "GET",
-//        url: 'js/user.json',
-//        async: "false",
-//        success: function(parent) {
-//            $.ajax({
-//                type: "GET",
-//                url: 'js/userChild.json',
-//                async: "false",
-//                success: function(child) {
-//                    for (var i = 0; i < parent.childResources.length; i++) {
-//                        for (var j = 0; j < child.length; j++) {
-//                            if (parent.childResources[i].operatorId === child[j].operatorId) {
-//                                var tempJson = new function() {
-//                                    this.operatorId = parent.childResources[i].operatorId;
-//                                    this.eUAAccepted = parent.childResources[i].eUAAccepted;
-//                                    this.operatorStatus = parent.childResources[i].operatorStatus;
-//                                    this.snoozeStartTime = parent.childResources[i].snoozeStartTime;
-//                                    this.snoozeEndTime = parent.childResources[i].snoozeEndTime;
-//                                    this.dob = parent.childResources[i].dob;
-//                                    this.resourceName = parent.childResources[i].resourceName;
-//                                    this.primaryPhoneNumber = parent.childResources[i].primaryPhoneNumber;
-//                                    this.primaryEmailAddress = parent.childResources[i].primaryEmailAddress;
-//                                    this.firstName = parent.childResources[i].firstName;
-//                                    this.geoFenceViolationCnt = child[j].geoFenceViolationCnt;
-//                                    this.curfewViolationCnt = child[j].curfewViolationCnt;
-//                                    this.totalPointsAfterTrip = child[j].totalPointsAfterTrip;
-//                                    this.totalBadgesAfterTrip = child[j].totalBadgesAfterTrip;
-//                                    this.tripStartDateTime = child[j].tripStartDateTime;
-//                                    this.tripEndTime = child[j].tripEndTime;
-//                                    this.distanceCovered = child[j].distanceCovered;
-//                                    this.speedViolationCnt = child[j].speedViolationCnt;
-//                                    this.tripPoints = child[j].tripPoints;
-//                                    this.badgesInTrip = child[j].badgesInTrip;
-//                                    this.totalCredits = child[j].totalCredits;
-//                                    this.tripProcessed = child[j].tripProcessed;
-//                                    this.tripDetail = child[j].tripDetail;
-//                                    this.tripId = child[j].tripId;
-//                                    this.tripSnoozed = child[j].tripSnoozed;
-//                                };
-//                                tempObj.push(tempJson);
-//                                console.log(JSON.stringify(tempObj));
-//                            }
-//                        }
-//
-//                    }
-//                }
-//            });
-//        }
-//    });
-//}
+function tripSummaryDetails() {
 
+}
+
+function callCreateSumJSON() {
+
+}
