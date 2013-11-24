@@ -125,6 +125,37 @@ function tripSummary() {
     console.log(JSON.stringify(tempSumJson));   //output for SUM Json
 }
 
+function callCreateSumJSON(tempChildArray) {
+    tempTripSummary = new function() {
+        this.operatorId = tempChildArray.operatorId;
+        this.eUAAccepted = tempChildArray.eUAAccepted;
+        this.operatorStatus = tempChildArray.operatorStatus;
+        this.snoozeStartTime = tempChildArray.snoozeStartTime;
+        this.snoozeEndTime = tempChildArray.snoozeEndTime;
+        this.dob = tempChildArray.dob;
+        this.resourceName = tempChildArray.resourceName;
+        this.primaryPhoneNumber = tempChildArray.primaryPhoneNumber;
+        this.primaryEmailAddress = tempChildArray.primaryEmailAddress;
+        this.firstName = tempChildArray.firstName;
+        this.geoFenceViolationCnt = addPoints(tempChildArray.geoFenceViolationCnt, "tmpGeoFenceViolationCnt");
+        this.curfewViolationCnt = addPoints(tempChildArray.curfewViolationCnt, "tmpCurfewViolationCnt");
+        this.totalPointsAfterTrip = addPoints(tempChildArray.totalPointsAfterTrip, "tmpTotalPointsAfterTrip");
+        this.totalBadgesAfterTrip = addPoints(tempChildArray.totalBadgesAfterTrip, "tmpTotalBadgesAfterTrip");
+        this.tripStartDateTime = tempChildArray.tripStartDateTime;
+        this.tripEndTime = tempChildArray.tripEndTime;
+        this.distanceCovered = addPoints(tempChildArray.distanceCovered, "tmpDistanceCovered");
+        this.speedViolationCnt = addPoints(tempChildArray.speedViolationCnt, "tmpSpeedViolationCnt");
+        this.tripPoints = addPoints(tempChildArray.tripPoints, "tmpTripPoints");
+        this.badgesInTrip = addPoints(tempChildArray.badgesInTrip, "tmpBadgesInTrip");
+        this.totalCredits = addPoints(tempChildArray.totalCredits, "tmpTotalCredits");
+        this.tripProcessed = tempChildArray.tripProcessed;
+        this.tripDetail = tempChildArray.tripDetail;
+        this.tripId = tempChildArray.tripId;
+        this.tripSnoozed = tempChildArray.tripSnoozed;
+        //create Json
+    };
+}
+
 function addPoints(actual, tmp) {
     var returnValue;
     if (tmp == "tmpGeoFenceViolationCnt") {
@@ -169,35 +200,4 @@ function addPoints(actual, tmp) {
 
 function tripSummaryDetails() {
 
-}
-
-function callCreateSumJSON(tempChildArray) {
-    tempTripSummary = new function() {
-        this.operatorId = tempChildArray.operatorId;
-        this.eUAAccepted = tempChildArray.eUAAccepted;
-        this.operatorStatus = tempChildArray.operatorStatus;
-        this.snoozeStartTime = tempChildArray.snoozeStartTime;
-        this.snoozeEndTime = tempChildArray.snoozeEndTime;
-        this.dob = tempChildArray.dob;
-        this.resourceName = tempChildArray.resourceName;
-        this.primaryPhoneNumber = tempChildArray.primaryPhoneNumber;
-        this.primaryEmailAddress = tempChildArray.primaryEmailAddress;
-        this.firstName = tempChildArray.firstName;
-        this.geoFenceViolationCnt = addPoints(tempChildArray.geoFenceViolationCnt, "tmpGeoFenceViolationCnt");
-        this.curfewViolationCnt = addPoints(tempChildArray.curfewViolationCnt, "tmpCurfewViolationCnt");
-        this.totalPointsAfterTrip = addPoints(tempChildArray.totalPointsAfterTrip, "tmpTotalPointsAfterTrip");
-        this.totalBadgesAfterTrip = addPoints(tempChildArray.totalBadgesAfterTrip, "tmpTotalBadgesAfterTrip");
-        this.tripStartDateTime = tempChildArray.tripStartDateTime;
-        this.tripEndTime = tempChildArray.tripEndTime;
-        this.distanceCovered = addPoints(tempChildArray.distanceCovered, "tmpDistanceCovered");
-        this.speedViolationCnt = addPoints(tempChildArray.speedViolationCnt, "tmpSpeedViolationCnt");
-        this.tripPoints = addPoints(tempChildArray.tripPoints, "tmpTripPoints");
-        this.badgesInTrip = addPoints(tempChildArray.badgesInTrip, "tmpBadgesInTrip");
-        this.totalCredits = addPoints(tempChildArray.totalCredits, "tmpTotalCredits");
-        this.tripProcessed = tempChildArray.tripProcessed;
-        this.tripDetail = tempChildArray.tripDetail;
-        this.tripId = tempChildArray.tripId;
-        this.tripSnoozed = tempChildArray.tripSnoozed;
-        //create Json
-    };
 }
